@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is accessing their own data
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // Users collection rules
+    match /users/{userId} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if false; // Prevent user deletion through client
+      
+      // Validate user profile updates
+      allow update: if isAuthenticated() && isOwner(userId)
+        && request.resource.data.keys().hasOnly(['displayName', 'defaultCategory', 'emailNotifications', 'updatedAt'])
+        && (request.resource.data.displayName is string || request.resource.data.displayName == null)
+        && (request.resource.data.defaultCategory is string || request.resource.data.defaultCategory == null)
+        && (request.resource.data.emailNotifications is bool || request.resource.data.emailNotifications == null)
+        && request.resource.data.updatedAt is timestamp;
+    }
+    
+    // Quotes collection rules
+    match /quotes/{quoteId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+  }
+} 
