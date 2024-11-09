@@ -16,7 +16,13 @@ import { QuoteList } from "@/app/components/dashboard/QuoteList";
 import { SearchBar } from "@/app/components/dashboard/SearchBar";
 import { CategoryFilter } from "@/app/components/dashboard/CategoryFilter";
 import { FavoritesFilter } from "@/app/components/dashboard/FavoritesFilter";
-import { addQuoteToFirebase, updateQuoteInFirebase, deleteQuoteFromFirebase, toggleQuoteFavorite, getQuotesForUser, getFilteredQuotes } from '@/lib/firebase/quotes';
+import { 
+  addQuoteToFirebase, 
+  updateQuoteInFirebase, 
+  deleteQuoteFromFirebase, 
+  toggleQuoteFavorite, 
+  getFilteredQuotes 
+} from '@/lib/firebase/quotes';
 import type { Quote, QuoteFormData } from '@/lib/types/quote';
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";

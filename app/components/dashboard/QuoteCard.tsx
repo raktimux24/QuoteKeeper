@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { Heart, Edit, Trash2 } from "lucide-react";
-import type { Quote } from '@/app/lib/types/quote';
+import type { Quote } from '@/lib/types/quote';
 
 interface QuoteCardProps {
   quote: Quote;
@@ -17,7 +17,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
       <CardContent className="p-6 space-y-4">
         <div className="flex justify-between items-start">
           <div className="space-y-2 flex-1">
-            <p className="font-serif text-lg text-gray-800 dark:text-gray-200">"{quote.text}"</p>
+            <p className="font-serif text-lg text-gray-800 dark:text-gray-200">&ldquo;{quote.text}&rdquo;</p>
             <p className="text-sm text-amber-600 dark:text-amber-400">- {quote.author}</p>
             <span className="inline-block px-3 py-1 text-xs rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400">
               {quote.category}
