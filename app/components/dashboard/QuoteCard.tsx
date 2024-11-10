@@ -1,7 +1,7 @@
 // app/components/dashboard/QuoteCard.tsx
-import { Card, CardContent } from "@/app/components/ui/card";
-import { Button } from "@/app/components/ui/button";
-import { HeartIcon as Heart, PencilIcon as Pencil, Trash2Icon as Trash2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Heart, Pencil, Trash2 } from "lucide-react";
 import type { Quote } from '@/lib/types/quote';
 
 interface QuoteCardProps {
@@ -13,13 +13,13 @@ interface QuoteCardProps {
 
 export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCardProps) {
   return (
-    <Card className="relative group">
+    <Card className="relative group bg-white/50 backdrop-blur-sm border-amber-200/20">
       <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div className="space-y-2 flex-1">
-            <p className="font-serif text-lg text-gray-800 dark:text-gray-200">&ldquo;{quote.text}&rdquo;</p>
-            <p className="text-sm text-amber-600 dark:text-amber-400">- {quote.author}</p>
-            <span className="inline-block px-3 py-1 text-xs rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <p className="font-serif text-lg text-gray-800">&ldquo;{quote.text}&rdquo;</p>
+            <p className="text-sm text-amber-600">- {quote.author}</p>
+            <span className="inline-block px-3 py-1 text-xs rounded-full bg-amber-100/50 text-amber-600">
               {quote.category}
             </span>
           </div>
@@ -28,7 +28,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               variant="ghost"
               size="icon"
               onClick={() => onToggleFavorite(quote.id)}
-              className={`hover:bg-amber-100 dark:hover:bg-amber-500/10 ${
+              className={`hover:bg-amber-100/50 ${
                 quote.favorite ? 'text-amber-500' : 'text-gray-400'
               }`}
             >
@@ -38,7 +38,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               variant="ghost"
               size="icon"
               onClick={() => onEdit(quote)}
-              className="hover:bg-amber-100 dark:hover:bg-amber-500/10 text-gray-400"
+              className="hover:bg-amber-100/50 text-gray-400"
             >
               <Pencil className="h-4 w-4" />
             </Button>
@@ -46,7 +46,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               variant="ghost"
               size="icon"
               onClick={() => onDelete(quote.id)}
-              className="hover:bg-amber-100 dark:hover:bg-amber-500/10 text-gray-400"
+              className="hover:bg-amber-100/50 text-gray-400"
             >
               <Trash2 className="h-4 w-4" />
             </Button>

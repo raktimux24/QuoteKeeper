@@ -19,7 +19,7 @@ export function QuoteList({
 }: QuoteListProps) {
   if (isLoading) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+      <div className="text-center py-8 text-gray-500">
         Loading quotes...
       </div>
     );
@@ -27,7 +27,7 @@ export function QuoteList({
 
   if (quotes.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+      <div className="text-center py-8 text-gray-500">
         No quotes found. Add your first quote!
       </div>
     );
