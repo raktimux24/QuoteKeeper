@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Plus, LogOut } from "lucide-react";
+import { PlusIcon, LogOutIcon } from "lucide-react";
 import { QuoteForm } from "@/app/components/dashboard/QuoteForm";
 import { QuoteList } from "@/app/components/dashboard/QuoteList";
 import { SearchBar } from "@/app/components/dashboard/SearchBar";
@@ -234,7 +234,7 @@ export default function DashboardPage() {
                 <Dialog open={isAddQuoteOpen} onOpenChange={setIsAddQuoteOpen}>
                   <DialogTrigger asChild>
                     <Button className="bg-amber-500 hover:bg-amber-600 text-white">
-                      <Plus className="h-4 w-4 mr-2" />
+                      <PlusIcon className="h-4 w-4 mr-2" />
                       Add Quote
                     </Button>
                   </DialogTrigger>
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                   className="w-10 h-10 rounded-full hover:bg-amber-100 dark:hover:bg-amber-500/10"
                   title="Logout"
                 >
-                  <LogOut className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                  <LogOutIcon className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                 </Button>
               </div>
             </div>

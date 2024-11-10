@@ -1,6 +1,6 @@
 // app/components/dashboard/QuoteList.tsx
 import { QuoteCard } from "./QuoteCard";
-import type { Quote } from '@/app/lib/types/quote';
+import type { Quote } from '@/lib/types/quote';
 
 interface QuoteListProps {
   quotes: Quote[];
