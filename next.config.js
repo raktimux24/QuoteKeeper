@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    appDir: true,
+  },
   async headers() {
     return [
       {
@@ -29,13 +32,6 @@ const nextConfig = {
         undici: false
       };
     }
-
-    // Add optimization for large modules
-    config.optimization = {
-      ...config.optimization,
-      minimize: true,
-      sideEffects: true
-    };
 
     return config;
   }

@@ -10,6 +10,8 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+    enable = true
 
 [[redirects]]
   from = "/*"
