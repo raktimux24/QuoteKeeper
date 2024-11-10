@@ -150,6 +150,16 @@ export default function DashboardPage() {
     try {
       setIsSubmitting(true);
       await updateQuoteInFirebase(editingQuote.id, data);
+      
+      // Refresh quotes list after update
+      const updatedQuotes = await getFilteredQuotes(
+        user!.uid,
+        filters.search,
+        filters.category,
+        filters.favoritesOnly
+      );
+      setQuotes(updatedQuotes);
+      
       toast({
         title: "Success",
         description: "Quote updated successfully",

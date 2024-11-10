@@ -1,17 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Chrome as ChromeIcon } from "lucide-react";
 import { signInWithGoogle, signUpWithEmail, signInWithEmail } from '@/lib/firebase/auth';
-import { db } from '@/lib/firebase';
-import { doc, setDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from '@/app/providers/auth-provider';
@@ -57,7 +53,6 @@ export default function LoginPage() {
       setLoading(true);
       setError('');
 
-      let user;
       if (isSignUp) {
         if (!name.trim()) {
           throw new Error('Name is required');
@@ -68,25 +63,45 @@ export default function LoginPage() {
         if (password.length < 6) {
           throw new Error('Password must be at least 6 characters');
         }
-        user = await signUpWithEmail(email, password, name);
+        await signUpWithEmail(email, password, name);
       } else {
-        user = await signInWithEmail(email, password);
+        await signInWithEmail(email, password);
       }
 
-      if (user) {
-        console.log('Email auth successful');
-        toast({
-          title: "Success",
-          description: isSignUp ? "Account created successfully" : "Signed in successfully",
-        });
-        router.push('/dashboard');
-      }
+      toast({
+        title: "Success",
+        description: isSignUp ? "Account created successfully" : "Signed in successfully",
+      });
+      router.push('/dashboard');
     } catch (error) {
       console.error('Authentication error:', error);
       setError(error instanceof Error ? error.message : 'Authentication failed');
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : 'Authentication failed',
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      await signInWithGoogle();
+      toast({
+        title: "Success",
+        description: "Signed in successfully",
+      });
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      setError('Failed to sign in with Google');
+      toast({
+        title: "Error",
+        description: "Failed to sign in with Google",
         variant: "destructive",
       });
     } finally {
@@ -102,35 +117,8 @@ export default function LoginPage() {
     setError('');
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      setLoading(true);
-      setError('');
-      const user = await signInWithGoogle();
-      if (user) {
-        console.log('Google sign-in successful');
-        toast({
-          title: "Success",
-          description: "Signed in successfully",
-        });
-        router.push('/dashboard');
-      }
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      setError('Failed to sign in with Google');
-      toast({
-        title: "Error",
-        description: "Failed to sign in with Google",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-amber-50 relative overflow-hidden">
-      {/* Grid Background - Same as dashboard */}
       <div 
         className="fixed inset-0 z-0"
         style={{
@@ -142,21 +130,19 @@ export default function LoginPage() {
         }}
       />
 
-      {/* Decorative Elements */}
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-amber-300/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
       
-      {/* Main Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <Card className="w-full max-w-md backdrop-blur-sm bg-white/90 border-2 border-amber-200/20">
           <CardHeader className="text-center space-y-2">
-            <div className="text-xs uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 font-sans">
+            <div className="text-xs uppercase tracking-[0.2em] text-amber-500 font-sans">
               Welcome to
             </div>
-            <CardTitle className="font-serif text-5xl font-bold text-amber-600 dark:text-amber-300 mb-2">
+            <CardTitle className="font-serif text-5xl font-bold text-amber-600 mb-2">
               Quote Keeper
             </CardTitle>
-            <CardDescription className="font-sans text-sm text-gray-600 dark:text-gray-400">
+            <CardDescription className="font-sans text-sm text-gray-600">
               Your personal collection of inspiring quotes
             </CardDescription>
           </CardHeader>
@@ -165,10 +151,7 @@ export default function LoginPage() {
             <Tabs 
               defaultValue="signin" 
               value={activeTab}
-              onValueChange={(value: TabValue) => {
-                setActiveTab(value);
-                resetForm();
-              }}
+              onValueChange={(value: string) => setActiveTab(value as TabValue)}
               className="w-full"
             >
               <TabsList className="grid w-full grid-cols-2 mb-8">
@@ -283,7 +266,6 @@ export default function LoginPage() {
             </div>
 
             <Button 
-              variant="outline" 
               className={ButtonStyles.google}
               onClick={handleGoogleSignIn}
               disabled={loading}
