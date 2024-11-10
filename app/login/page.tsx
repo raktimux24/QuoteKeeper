@@ -6,7 +6,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Chrome } from "lucide-react";
+import { ChromeIcon } from "lucide-react";
 import { signInWithGoogle, signUpWithEmail, signInWithEmail } from '@/lib/firebase/auth';
 import { db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
@@ -290,7 +290,7 @@ export default function LoginPage() {
               onClick={handleGoogleSignIn}
               disabled={loading}
             >
-              <Chrome className="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12 text-amber-500" />
+              <ChromeIcon className="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-12 text-amber-500" />
               {loading ? 'Signing in...' : (activeTab === 'signin' ? 'Sign in with Google' : 'Sign up with Google')}
             </Button>
           </CardContent>
