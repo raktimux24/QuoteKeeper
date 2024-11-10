@@ -6,7 +6,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { ChromeIcon } from "lucide-react";
+import { Chrome as ChromeIcon } from "lucide-react";
 import { signInWithGoogle, signUpWithEmail, signInWithEmail } from '@/lib/firebase/auth';
 import { db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';

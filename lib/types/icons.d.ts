@@ -1,7 +1,9 @@
 declare module 'lucide-react' {
   import { LucideIcon } from 'lucide-react';
-  export const Settings: LucideIcon;
-  export const LogOut: LucideIcon;
-  export const Plus: LucideIcon;
+  
+  export const HeartIcon: LucideIcon;
+  export const PencilIcon: LucideIcon;
+  export const Trash2Icon: LucideIcon;
+  export const Chrome: LucideIcon;
   // Add other icons as needed
 } 

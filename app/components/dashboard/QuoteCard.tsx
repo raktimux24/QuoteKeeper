@@ -1,7 +1,7 @@
 // app/components/dashboard/QuoteCard.tsx
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { Heart, Pencil, Trash2 } from "lucide-react";
+import { HeartIcon as Heart, PencilIcon as Pencil, Trash2Icon as Trash2 } from "lucide-react";
 import type { Quote } from '@/lib/types/quote';
 
 interface QuoteCardProps {

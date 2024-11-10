@@ -1,6 +1,6 @@
 // app/components/dashboard/FavoritesFilter.tsx
 import { Button } from "@/app/components/ui/button";
-import { Heart } from "lucide-react";
+import { HeartIcon as Heart } from "lucide-react";
 
 interface FavoritesFilterProps {
   value: boolean;
