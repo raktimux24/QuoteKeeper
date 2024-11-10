@@ -8,23 +8,17 @@ const nextConfig = {
   transpilePackages: ['lucide-react'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
+      // Fixes npm packages that depend on `fs` module
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
         undici: false,
       };
     }
-
-    config.module.rules.push({
-      test: /\.m?js$/,
-      exclude: /node_modules\/(?!undici)/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
-          plugins: ['@babel/plugin-proposal-private-methods', '@babel/plugin-proposal-class-properties'],
-        },
-      },
-    });
 
     return config;
   },
