@@ -102,53 +102,74 @@ export const toggleQuoteFavorite = async (quoteId: string, currentStatus: boolea
 // Get filtered quotes
 export const getFilteredQuotes = async (
   userId: string,
-  search: string = '',
+  searchTerm: string = '',
   category: string = 'all',
   favoritesOnly: boolean = false
 ): Promise<Quote[]> => {
   try {
-    // Start with base query for userId only
-    const q = query(
+    // Basic query without ordering first
+    let baseQuery = query(
       collection(db, 'quotes'),
       where('userId', '==', userId)
     );
 
-    const querySnapshot = await getDocs(q);
-    let quotes = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate() || new Date(),
-      updatedAt: doc.data().updatedAt?.toDate() || new Date(),
-    })) as Quote[];
+    let quotes: Quote[] = [];
+    
+    try {
+      // Try to get quotes with ordering
+      const orderedQuery = query(
+        collection(db, 'quotes'),
+        where('userId', '==', userId),
+        orderBy('createdAt', 'desc')
+      );
+      
+      const snapshot = await getDocs(orderedQuery);
+      quotes = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date(),
+        updatedAt: doc.data().updatedAt?.toDate() || new Date(),
+      })) as Quote[];
+    } catch (error) {
+      // If ordered query fails, fallback to unordered
+      console.warn('Temporarily using unordered query while index is being created');
+      const snapshot = await getDocs(baseQuery);
+      quotes = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date(),
+        updatedAt: doc.data().updatedAt?.toDate() || new Date(),
+      })) as Quote[];
+      
+      // Sort manually if server ordering failed
+      quotes.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    }
 
     // Apply filters in memory
-    if (category !== 'all') {
-      quotes = quotes.filter(quote => quote.category === category);
-    }
+    return quotes.filter(quote => {
+      // Category filter
+      if (category && category !== 'all' && quote.category.toLowerCase() !== category.toLowerCase()) {
+        return false;
+      }
 
-    if (favoritesOnly) {
-      quotes = quotes.filter(quote => quote.favorite);
-    }
+      // Search filter
+      if (searchTerm) {
+        const search = searchTerm.toLowerCase();
+        const matchesText = quote.text.toLowerCase().includes(search);
+        const matchesAuthor = quote.author.toLowerCase().includes(search);
+        const matchesCategory = quote.category.toLowerCase().includes(search);
+        return matchesText || matchesAuthor || matchesCategory;
+      }
 
-    if (search) {
-      const searchLower = search.toLowerCase();
-      quotes = quotes.filter(quote => 
-        quote.text.toLowerCase().includes(searchLower) ||
-        quote.author.toLowerCase().includes(searchLower)
-      );
-    }
+      // Favorites filter
+      if (favoritesOnly && !quote.favorite) {
+        return false;
+      }
 
-    // Sort by createdAt in memory
-    quotes.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-
-    return quotes;
+      return true;
+    });
   } catch (error) {
     console.error('Error getting filtered quotes:', error);
-    if (error instanceof Error) {
-      if (error.message.includes('permission-denied')) {
-        throw new Error('You do not have permission to access these quotes');
-      }
-    }
     throw error;
   }
 };

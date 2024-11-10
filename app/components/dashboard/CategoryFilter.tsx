@@ -18,11 +18,15 @@ const CATEGORIES = [
 
 export function CategoryFilter({ value, onCategoryChange }: CategoryFilterProps) {
   return (
-    <Select value={value} onValueChange={onCategoryChange}>
-      <SelectTrigger className="w-[180px] border-amber-200/20 bg-white/50 dark:bg-gray-800/50">
+    <Select 
+      value={value} 
+      onValueChange={onCategoryChange}
+      defaultValue="all"
+    >
+      <SelectTrigger className="w-[180px] bg-white border-amber-200/20">
         <SelectValue placeholder="All Categories" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-white">
         <SelectItem value="all">All Categories</SelectItem>
         {CATEGORIES.map(category => (
           <SelectItem key={category.value} value={category.value}>

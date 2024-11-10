@@ -129,18 +129,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-amber-50 dark:bg-gray-900 relative overflow-hidden">
-      {/* Grid Background */}
+    <div className="min-h-screen bg-amber-50 relative overflow-hidden">
+      {/* Grid Background - Same as dashboard */}
       <div 
-        className="absolute inset-0 z-0"
+        className="fixed inset-0 z-0"
         style={{
           backgroundImage: `
             linear-gradient(rgba(201, 128, 35, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 128, 35, 0.1) 1px, transparent 1px),
-            linear-gradient(45deg, rgba(201, 128, 35, 0.1) 0.5px, transparent 0.5px),
-            linear-gradient(-45deg, rgba(201, 128, 35, 0.1) 0.5px, transparent 0.5px)
+            linear-gradient(90deg, rgba(201, 128, 35, 0.1) 1px, transparent 1px)
           `,
-          backgroundSize: '4rem 4rem, 4rem 4rem, 2rem 2rem, 2rem 2rem'
+          backgroundSize: '4rem 4rem'
         }}
       />
 
@@ -149,8 +147,8 @@ export default function LoginPage() {
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
       
       {/* Main Content */}
-      <div className="relative z-10 w-full max-w-md p-8">
-        <Card className="w-full backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 border-2 border-amber-200/20">
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <Card className="w-full max-w-md backdrop-blur-sm bg-white/90 border-2 border-amber-200/20">
           <CardHeader className="text-center space-y-2">
             <div className="text-xs uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 font-sans">
               Welcome to

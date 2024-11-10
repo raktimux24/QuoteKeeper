@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, LogOutIcon } from "lucide-react";
@@ -66,11 +67,18 @@ export default function DashboardPage() {
         setQuotes(fetchedQuotes);
       } catch (error) {
         console.error('Error fetching quotes:', error);
-        toast({
-          title: "Error",
-          description: error instanceof Error ? error.message : "Failed to fetch quotes",
-          variant: "destructive",
-        });
+        if (error instanceof Error && error.message.includes('requires an index')) {
+          toast({
+            title: "Loading...",
+            description: "Setting up database indexes. This may take a few minutes.",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to fetch quotes. Please try refreshing the page.",
+            variant: "destructive",
+          });
+        }
         setQuotes([]);
       } finally {
         setIsLoading(false);
@@ -193,11 +201,15 @@ export default function DashboardPage() {
     }
   };
 
+  const handleCategoryChange = (value: string) => {
+    setFilters(prev => ({ ...prev, category: value }));
+  };
+
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-amber-50 dark:bg-gray-900">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600 dark:border-amber-400"></div>
+      <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
       </div>
     );
   }
@@ -208,7 +220,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-amber-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-amber-50">
       {/* Grid Background */}
       <div 
         className="fixed inset-0 z-0"
@@ -223,10 +235,10 @@ export default function DashboardPage() {
 
       <div className="relative z-10">
         {/* Header - Added sticky positioning */}
-        <header className="sticky top-0 border-b-2 border-amber-200/20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
+        <header className="sticky top-0 border-b-2 border-amber-200/20 bg-white/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-4">
             <div className="flex justify-between items-center">
-              <h1 className="font-serif text-2xl font-bold text-amber-600 dark:text-amber-400">
+              <h1 className="font-serif text-2xl font-bold text-amber-600">
                 Quote Keeper
               </h1>
               <div className="flex items-center gap-2">
@@ -238,9 +250,12 @@ export default function DashboardPage() {
                       Add Quote
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent aria-describedby="add-quote-description">
                     <DialogHeader>
                       <DialogTitle>Add New Quote</DialogTitle>
+                      <DialogDescription id="add-quote-description">
+                        Add a new quote to your collection.
+                      </DialogDescription>
                     </DialogHeader>
                     <QuoteForm
                       onSubmit={handleAddQuote}
@@ -253,10 +268,10 @@ export default function DashboardPage() {
                   variant="ghost"
                   size="icon"
                   onClick={handleLogout}
-                  className="w-10 h-10 rounded-full hover:bg-amber-100 dark:hover:bg-amber-500/10"
+                  className="w-10 h-10 rounded-full hover:bg-amber-100"
                   title="Logout"
                 >
-                  <LogOutIcon className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                  <LogOutIcon className="h-5 w-5 text-amber-600" />
                 </Button>
               </div>
             </div>
@@ -275,7 +290,7 @@ export default function DashboardPage() {
             <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
               <CategoryFilter 
                 value={filters.category}
-                onCategoryChange={(value) => setFilters(prev => ({ ...prev, category: value }))}
+                onCategoryChange={handleCategoryChange}
               />
               <FavoritesFilter
                 value={filters.favoritesOnly}
@@ -297,9 +312,12 @@ export default function DashboardPage() {
 
       {/* Edit Quote Dialog */}
       <Dialog open={editingQuote !== null} onOpenChange={() => setEditingQuote(null)}>
-        <DialogContent>
+        <DialogContent aria-describedby="edit-quote-description">
           <DialogHeader>
             <DialogTitle>Edit Quote</DialogTitle>
+            <DialogDescription id="edit-quote-description">
+              Make changes to your quote.
+            </DialogDescription>
           </DialogHeader>
           <QuoteForm
             quote={editingQuote}

@@ -5,9 +5,21 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Handle undici and other Node.js modules
       config.resolve.fallback = {
         fs: false,
         net: false,
@@ -18,20 +30,12 @@ const nextConfig = {
       };
     }
 
-    // Add rule for handling Firebase modules
-    config.module.rules.push({
-      test: /\.m?js$/,
-      include: [
-        /node_modules\/@firebase/,
-        /node_modules\/firebase/,
-      ],
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['next/babel'],
-        },
-      },
-    });
+    // Add optimization for large modules
+    config.optimization = {
+      ...config.optimization,
+      minimize: true,
+      sideEffects: true
+    };
 
     return config;
   }

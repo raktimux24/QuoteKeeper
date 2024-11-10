@@ -22,7 +22,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
     --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
+    --input: 0 0% 100%;
     --ring: 35.5 91.7% 32.9%;
     --radius: 0.5rem;
   }
@@ -33,7 +33,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-amber-50;
   }
 }
 
@@ -50,4 +50,25 @@
   .bg-gradient {
     background: linear-gradient(to bottom right, rgba(253, 230, 138, 0.2), rgba(251, 146, 60, 0.1));
   }
+  .input-white {
+    @apply bg-white border-amber-200/20;
+  }
+  .select-white {
+    @apply bg-white border-amber-200/20;
+  }
+  .grid-background {
+    background-image: linear-gradient(rgba(201, 128, 35, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 128, 35, 0.1) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+  }
+}
+
+/* Override input background */
+input, textarea, select {
+  @apply bg-white !important;
+}
+
+/* Override select background */
+select, .select-trigger {
+  @apply bg-white !important;
 }
