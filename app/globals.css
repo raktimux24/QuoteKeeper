@@ -22,35 +22,14 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
     --border: 20 5.9% 90%;
-    --input: 0 0% 100%;
-    --ring: 35.5 91.7% 32.9%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
     --radius: 0.5rem;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-amber-50;
-  }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
-}
-
-@layer utilities {
-  .animate-shake {
-    animation: shake 0.2s ease-in-out 0s 2;
-  }
-  .bg-gradient {
-    background: linear-gradient(to bottom right, rgba(253, 230, 138, 0.2), rgba(251, 146, 60, 0.1));
-  }
-  .input-white {
+@layer components {
+  .card-white {
     @apply bg-white border-amber-200/20;
   }
   .select-white {

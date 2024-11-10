@@ -25,12 +25,12 @@ const ButtonStyles = {
           "focus:ring-2 focus:ring-amber-500 focus:ring-offset-2",
           
   google: "w-full font-sans text-sm border-2 border-amber-200/20 " +
-          "hover:bg-amber-50/50 dark:hover:bg-amber-500/10 " +
+          "hover:bg-amber-50/50 " +
           "transition-all duration-300 hover:scale-[1.02] hover:border-amber-500/50 group " +
           "focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
 };
 
-const InputStyles = "font-sans text-sm bg-white/50 dark:bg-gray-800/50 " +
+const InputStyles = "font-sans text-sm bg-white/50 " +
                    "border-amber-200/20 focus:border-amber-500 " +
                    "transition-colors duration-200";
 
@@ -276,7 +276,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-amber-200/20"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-4 bg-white dark:bg-gray-900 text-gray-500 font-sans">
+                <span className="px-4 bg-white text-gray-500 font-sans">
                   Or continue with
                 </span>
               </div>
