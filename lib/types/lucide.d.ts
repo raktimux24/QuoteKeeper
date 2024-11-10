@@ -15,4 +15,5 @@ declare module 'lucide-react' {
   export const Check: ComponentType<IconProps>;
   export const ChevronDown: ComponentType<IconProps>;
   export const ChevronUp: ComponentType<IconProps>;
+  export const X: ComponentType<IconProps>;
 } 
