@@ -1,25 +1,29 @@
-// src/components/dashboard/FavoritesFilter.tsx
+// app/components/dashboard/FavoritesFilter.tsx
 import { Button } from "@/app/components/ui/button";
-import { Heart } from "lucide-react";
+import { HeartIcon } from "lucide-react";
 
 interface FavoritesFilterProps {
   value: boolean;
   onToggle: () => void;
 }
 
-export const FavoritesFilter = ({ value, onToggle }: FavoritesFilterProps) => (
-  <Button
-    variant="outline"
-    onClick={onToggle}
-    className={`border-amber-200/20 ${
-      value ? 'bg-amber-100 dark:bg-amber-500/10' : ''
-    }`}
-  >
-    <Heart 
-      className={`h-4 w-4 mr-2 ${
-        value ? 'text-amber-500 fill-current' : 'text-gray-400'
-      }`} 
-    />
-    Favorites
-  </Button>
-);
+export function FavoritesFilter({ value, onToggle }: FavoritesFilterProps) {
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={onToggle}
+      className={`
+        font-sans text-sm border-2 
+        ${value 
+          ? 'border-amber-500 text-amber-500 bg-amber-50/50 dark:bg-amber-500/10' 
+          : 'border-amber-200/20 hover:border-amber-500/50'
+        }
+        transition-all duration-300 hover:scale-[1.02]
+      `}
+    >
+      <HeartIcon className="h-4 w-4 mr-2" fill={value ? 'currentColor' : 'none'} />
+      Favorites
+    </Button>
+  );
+}

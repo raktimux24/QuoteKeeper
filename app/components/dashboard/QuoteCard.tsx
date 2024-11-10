@@ -1,7 +1,7 @@
 // app/components/dashboard/QuoteCard.tsx
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { Heart, Edit, Trash2 } from "lucide-react";
+import { HeartIcon, Edit, Trash2 } from "lucide-react";
 import type { Quote } from '@/lib/types/quote';
 
 interface QuoteCardProps {
@@ -32,7 +32,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
                 quote.favorite ? 'text-amber-500' : 'text-gray-400'
               }`}
             >
-              <Heart className="h-4 w-4" fill={quote.favorite ? 'currentColor' : 'none'} />
+              <HeartIcon className="h-4 w-4" fill={quote.favorite ? 'currentColor' : 'none'} />
             </Button>
             <Button
               variant="ghost"
