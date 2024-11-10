@@ -1,7 +1,7 @@
 // app/components/dashboard/QuoteCard.tsx
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { HeartIcon, EditIcon, Trash2Icon } from "lucide-react";
+import { Heart, Pencil, Trash2 } from "lucide-react";
 import type { Quote } from '@/lib/types/quote';
 
 interface QuoteCardProps {
@@ -13,8 +13,8 @@ interface QuoteCardProps {
 
 export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCardProps) {
   return (
-    <Card className="group hover:border-amber-500/50 transition-all duration-300 border-2 border-amber-200/20 bg-white/90 dark:bg-gray-800/90">
-      <CardContent className="p-6 space-y-4">
+    <Card className="relative group">
+      <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div className="space-y-2 flex-1">
             <p className="font-serif text-lg text-gray-800 dark:text-gray-200">&ldquo;{quote.text}&rdquo;</p>
@@ -23,7 +23,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               {quote.category}
             </span>
           </div>
-          <div className="flex space-x-2">
+          <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <Button
               variant="ghost"
               size="icon"
@@ -32,7 +32,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
                 quote.favorite ? 'text-amber-500' : 'text-gray-400'
               }`}
             >
-              <HeartIcon className="h-4 w-4" fill={quote.favorite ? 'currentColor' : 'none'} />
+              <Heart className="h-4 w-4" fill={quote.favorite ? 'currentColor' : 'none'} />
             </Button>
             <Button
               variant="ghost"
@@ -40,7 +40,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               onClick={() => onEdit(quote)}
               className="hover:bg-amber-100 dark:hover:bg-amber-500/10 text-gray-400"
             >
-              <EditIcon className="h-4 w-4" />
+              <Pencil className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
@@ -48,7 +48,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               onClick={() => onDelete(quote.id)}
               className="hover:bg-amber-100 dark:hover:bg-amber-500/10 text-gray-400"
             >
-              <Trash2Icon className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" />
             </Button>
           </div>
         </div>

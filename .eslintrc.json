@@ -12,5 +12,8 @@
     "@typescript-eslint/no-empty-interface": "warn",
     "@typescript-eslint/no-inferrable-types": "warn",
     "react/no-unescaped-entities": "off"
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
   }
 }
