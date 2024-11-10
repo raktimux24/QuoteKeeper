@@ -8,7 +8,6 @@ const nextConfig = {
   transpilePackages: ['lucide-react'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Fixes npm packages that depend on `fs` module and other Node.js specifics
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
@@ -16,31 +15,38 @@ const nextConfig = {
         tls: false,
         crypto: false,
         stream: false,
-        undici: false,
       };
     }
 
-    // Add babel-loader for handling undici and other problematic modules
+    // Add specific loader for undici
     config.module.rules.push({
       test: /\.m?js$/,
-      exclude: /node_modules\/(?!undici)/,
+      include: [
+        /node_modules\/@firebase\/auth\/node_modules\/undici/,
+        /node_modules\/undici/
+      ],
       use: {
         loader: 'babel-loader',
         options: {
-          presets: ['@babel/preset-env'],
+          presets: [
+            ['@babel/preset-env', {
+              targets: {
+                node: 'current',
+              },
+              modules: 'commonjs'
+            }]
+          ],
           plugins: [
+            '@babel/plugin-proposal-private-methods',
             '@babel/plugin-proposal-class-properties',
-            '@babel/plugin-proposal-private-methods'
-          ]
+            '@babel/plugin-proposal-private-property-in-object'
+          ],
+          cacheDirectory: true
         }
       }
     });
 
     return config;
-  },
-  // Add experimental features to support newer JavaScript features
-  experimental: {
-    esmExternals: 'loose', // Required for undici
   }
 };
 
