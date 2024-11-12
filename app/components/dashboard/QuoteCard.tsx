@@ -23,7 +23,10 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               {quote.category}
             </span>
           </div>
-          <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div 
+            className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Quote actions"
+          >
             <Button
               variant="ghost"
               size="icon"
@@ -31,6 +34,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               className={`hover:bg-amber-100/50 ${
                 quote.favorite ? 'text-amber-500' : 'text-gray-400'
               }`}
+              aria-label={quote.favorite ? "Remove from favorites" : "Add to favorites"}
             >
               <HeartIcon className="h-4 w-4" fill={quote.favorite ? 'currentColor' : 'none'} />
             </Button>
@@ -39,6 +43,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               size="icon"
               onClick={() => onEdit(quote)}
               className="hover:bg-amber-100/50 text-gray-400"
+              aria-label="Edit quote"
             >
               <PencilIcon className="h-4 w-4" />
             </Button>
@@ -47,6 +52,7 @@ export function QuoteCard({ quote, onEdit, onDelete, onToggleFavorite }: QuoteCa
               size="icon"
               onClick={() => onDelete(quote.id)}
               className="hover:bg-amber-100/50 text-gray-400"
+              aria-label="Delete quote"
             >
               <Trash2Icon className="h-4 w-4" />
             </Button>

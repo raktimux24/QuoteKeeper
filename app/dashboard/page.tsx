@@ -25,9 +25,10 @@ import {
   getFilteredQuotes 
 } from '@/lib/firebase/quotes';
 import type { Quote, QuoteFormData } from '@/lib/types/quote';
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useAuth } from '@/app/providers/auth-provider';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 
 export default function DashboardPage() {
   const [isAddQuoteOpen, setIsAddQuoteOpen] = useState(false);
@@ -230,113 +231,118 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-amber-50">
-      {/* Grid Background */}
-      <div 
-        className="fixed inset-0 z-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(201, 128, 35, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 128, 35, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '4rem 4rem'
-        }}
-      />
+    <ErrorBoundary>
+      <div className="min-h-screen bg-amber-50">
+        {/* Grid Background */}
+        <div 
+          className="fixed inset-0 z-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(201, 128, 35, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(201, 128, 35, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '4rem 4rem'
+          }}
+        />
 
-      <div className="relative z-10">
-        {/* Header - Added sticky positioning */}
-        <header className="sticky top-0 border-b-2 border-amber-200/20 bg-white/80 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
-              <h1 className="font-serif text-2xl font-bold text-amber-600">
-                Quote Keeper
-              </h1>
-              <div className="flex items-center gap-2">
-                {/* Add Quote Button */}
-                <Dialog open={isAddQuoteOpen} onOpenChange={setIsAddQuoteOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="bg-amber-500 hover:bg-amber-600 text-white">
-                      <PlusIcon className="h-4 w-4 mr-2" />
-                      Add Quote
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent aria-describedby="add-quote-description">
-                    <DialogHeader>
-                      <DialogTitle>Add New Quote</DialogTitle>
-                      <DialogDescription id="add-quote-description">
-                        Add a new quote to your collection.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <QuoteForm
-                      onSubmit={handleAddQuote}
-                      onClose={() => setIsAddQuoteOpen(false)}
-                      isLoading={isSubmitting}
-                    />
-                  </DialogContent>
-                </Dialog>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleLogout}
-                  className="w-10 h-10 rounded-full hover:bg-amber-100"
-                  title="Logout"
-                >
-                  <LogOutIcon className="h-5 w-5 text-amber-600" />
-                </Button>
+        <div className="relative z-10">
+          {/* Header - Added sticky positioning */}
+          <header className="sticky top-0 border-b-2 border-amber-200/20 bg-white/80 backdrop-blur-sm">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex justify-between items-center">
+                <h1 className="font-serif text-2xl font-bold text-amber-600">
+                  Quote Keeper
+                </h1>
+                <div className="flex items-center gap-2">
+                  {/* Add Quote Button */}
+                  <Dialog open={isAddQuoteOpen} onOpenChange={setIsAddQuoteOpen}>
+                    <DialogTrigger asChild>
+                      <Button 
+                        variant="default"
+                        className="bg-amber-500 hover:bg-amber-600 text-white"
+                      >
+                        <PlusIcon className="h-4 w-4 mr-2" />
+                        Add Quote
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent aria-describedby="add-quote-description">
+                      <DialogHeader>
+                        <DialogTitle>Add New Quote</DialogTitle>
+                        <DialogDescription id="add-quote-description">
+                          Add a new quote to your collection.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <QuoteForm
+                        onSubmit={handleAddQuote}
+                        onClose={() => setIsAddQuoteOpen(false)}
+                        isLoading={isSubmitting}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleLogout}
+                    className="w-10 h-10 rounded-full hover:bg-amber-100"
+                    title="Logout"
+                  >
+                    <LogOutIcon className="h-5 w-5 text-amber-600" />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-        {/* Main Content */}
-        <main className="container mx-auto px-4 py-8">
-          {/* Filters Section - Removed Add Quote button */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div className="flex-1 w-full md:w-auto">
-              <SearchBar 
-                onSearch={(value) => setFilters(prev => ({ ...prev, search: value }))}
-              />
+          {/* Main Content */}
+          <main className="container mx-auto px-4 py-8">
+            {/* Filters Section - Removed Add Quote button */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+              <div className="flex-1 w-full md:w-auto">
+                <SearchBar 
+                  onSearch={(value) => setFilters(prev => ({ ...prev, search: value }))}
+                />
+              </div>
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <CategoryFilter 
+                  value={filters.category}
+                  onCategoryChange={handleCategoryChange}
+                />
+                <FavoritesFilter
+                  value={filters.favoritesOnly}
+                  onToggle={() => setFilters(prev => ({ ...prev, favoritesOnly: !prev.favoritesOnly }))}
+                />
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-              <CategoryFilter 
-                value={filters.category}
-                onCategoryChange={handleCategoryChange}
-              />
-              <FavoritesFilter
-                value={filters.favoritesOnly}
-                onToggle={() => setFilters(prev => ({ ...prev, favoritesOnly: !prev.favoritesOnly }))}
-              />
-            </div>
-          </div>
 
-          {/* Quotes List */}
-          <QuoteList
-            quotes={quotes}
-            onEdit={setEditingQuote}
-            onDelete={handleDeleteQuote}
-            onToggleFavorite={handleToggleFavorite}
-            isLoading={isLoading}
-          />
-        </main>
+            {/* Quotes List */}
+            <QuoteList
+              quotes={quotes}
+              onEdit={setEditingQuote}
+              onDelete={handleDeleteQuote}
+              onToggleFavorite={handleToggleFavorite}
+              isLoading={isLoading}
+            />
+          </main>
+        </div>
+
+        {/* Edit Quote Dialog */}
+        <Dialog open={editingQuote !== null} onOpenChange={() => setEditingQuote(null)}>
+          <DialogContent aria-describedby="edit-quote-description">
+            <DialogHeader>
+              <DialogTitle>Edit Quote</DialogTitle>
+              <DialogDescription id="edit-quote-description">
+                Make changes to your quote.
+              </DialogDescription>
+            </DialogHeader>
+            <QuoteForm
+              quote={editingQuote}
+              onSubmit={handleUpdateQuote}
+              onClose={() => setEditingQuote(null)}
+              isLoading={isSubmitting}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
-
-      {/* Edit Quote Dialog */}
-      <Dialog open={editingQuote !== null} onOpenChange={() => setEditingQuote(null)}>
-        <DialogContent aria-describedby="edit-quote-description">
-          <DialogHeader>
-            <DialogTitle>Edit Quote</DialogTitle>
-            <DialogDescription id="edit-quote-description">
-              Make changes to your quote.
-            </DialogDescription>
-          </DialogHeader>
-          <QuoteForm
-            quote={editingQuote}
-            onSubmit={handleUpdateQuote}
-            onClose={() => setEditingQuote(null)}
-            isLoading={isSubmitting}
-          />
-        </DialogContent>
-      </Dialog>
-    </div>
+    </ErrorBoundary>
   );
 }
