@@ -40,10 +40,12 @@ const toastVariants = cva(
   }
 )
 
+type ToastVariants = NonNullable<Parameters<typeof toastVariants>[0]>
+
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
+    ToastVariants
 >(({ className, variant, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
